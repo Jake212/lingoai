@@ -1,23 +1,248 @@
-LINGOAI
-MILLENNIAL & GEN Z → PLAIN ENGLISH
-URBAN DICTIONARY + GEMINI AI
-INTERNET LANGUAGE INTELLIGENCE
-LINGOAI
-Paste any Millennial or Gen Z phrase on the left — get an instant plain English translation on the right that anyone can understand.
-TRANSLATE AS:
-🌐 Both
-💻 Millennial
-📱 Gen Z
-
-MILLENNIAL / GEN Z INPUT
-0 / 400
-
-TRANSLATE
-
-PLAIN ENGLISH TRANSLATION
-// TRANSLATION APPEARS HERE
-TRY THESE PHRASES
-
-LingoAI
-DATA FROM URBAN DICTIONARY · POWERED BY GOOGLE GEMINI
-URBANDICTIONARY.COM ↗
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LingoAI — Millennial & Gen Z Translator</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',system-ui,sans-serif; background:#0c0c14; color:#f0f0f8; min-height:100vh; }
+@keyframes blink  { 0%,100%{opacity:1} 50%{opacity:.15} }
+@keyframes spin   { to{transform:rotate(360deg)} }
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+.topbar { background:#08080f; border-bottom:1px solid #16162a; display:flex; justify-content:space-between; align-items:center; padding:0 28px; height:42px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.14em; color:#333; }
+.topbar-brand { color:#818cf8; font-weight:700; font-size:12px; }
+.live-dot { width:6px; height:6px; background:#22c55e; border-radius:50%; display:inline-block; margin-right:7px; animation:blink 2s ease-in-out infinite; }
+.hero { max-width:900px; margin:0 auto; padding:52px 28px 40px; border-bottom:1px solid #16162a; }
+.eyebrow { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.3em; color:#6366f1; text-transform:uppercase; margin-bottom:14px; }
+.hero h1 { font-family:'Syne',sans-serif; font-size:clamp(56px,10vw,90px); font-weight:800; line-height:.9; letter-spacing:-.02em; margin-bottom:18px; }
+.hero h1 em { color:#818cf8; font-style:italic; }
+.hero-desc { font-size:15px; color:#5a5a72; line-height:1.75; max-width:520px; margin-bottom:28px; }
+.hero-desc strong { color:#a5b4fc; }
+.hero-desc em { color:#818cf8; font-style:italic; }
+.gen-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.gen-label { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#333; letter-spacing:.15em; }
+.gen-btn { border-radius:20px; padding:5px 18px; font-size:12px; font-weight:700; cursor:pointer; border:1px solid #222232; background:transparent; color:#444; transition:all .15s; font-family:'DM Sans',sans-serif; }
+.gen-btn.active-both       { background:#f59e0b22; color:#f59e0b; border-color:#f59e0b; }
+.gen-btn.active-millennial { background:#8b5cf622; color:#8b5cf6; border-color:#8b5cf6; }
+.gen-btn.active-genz       { background:#ec489922; color:#ec4899; border-color:#ec4899; }
+.main { max-width:900px; margin:0 auto; padding:44px 28px 80px; }
+.two-panel { display:grid; grid-template-columns:1fr 1fr; border:1px solid #1a1a2e; border-radius:14px; overflow:hidden; box-shadow:0 24px 64px rgba(0,0,0,.6); margin-bottom:44px; }
+.pane { display:flex; flex-direction:column; }
+.pane-left  { border-right:1px solid #1a1a2e; }
+.pane-right { background:#09090f; }
+.pane-bar { background:#10101e; padding:11px 18px; display:flex; align-items:center; gap:8px; border-bottom:1px solid #1a1a2e; font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:.22em; color:#444; text-transform:uppercase; }
+.pane-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+textarea { flex:1; background:#0d0d1a; border:none; outline:none; resize:none; font-family:'DM Sans',sans-serif; font-size:17px; color:#e2e2f0; padding:22px 20px; line-height:1.7; caret-color:#818cf8; min-height:160px; }
+textarea::placeholder { color:#2a2a3e; font-style:italic; }
+.pane-foot { background:#0d0d1a; padding:12px 18px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid #16162a; }
+.char-hint { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#252535; }
+.translate-btn { background:#6366f1; color:#fff; border:none; cursor:pointer; font-size:13px; font-weight:700; letter-spacing:.08em; padding:11px 24px; border-radius:8px; box-shadow:0 4px 18px rgba(99,102,241,.35); display:flex; align-items:center; gap:8px; transition:all .15s; font-family:'DM Sans',sans-serif; }
+.translate-btn:hover:not(:disabled) { background:#4f46e5; transform:translateY(-1px); box-shadow:0 8px 28px rgba(99,102,241,.45); }
+.translate-btn:disabled { opacity:.35; cursor:not-allowed; transform:none; }
+.out-idle    { flex:1; display:flex; align-items:center; justify-content:center; min-height:160px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#1e1e30; letter-spacing:.14em; }
+.out-loading { flex:1; display:flex; align-items:center; gap:12px; min-height:160px; padding:24px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:#383850; letter-spacing:.1em; }
+.spinner { width:16px; height:16px; border:2px solid #1e1e30; border-top-color:#6366f1; border-radius:50%; animation:spin .75s linear infinite; flex-shrink:0; }
+.out-result { flex:1; padding:22px; font-size:17px; font-weight:300; line-height:1.8; color:#c0c0d8; min-height:160px; animation:fadeUp .4s ease forwards; }
+.out-error  { flex:1; padding:22px; color:#f87171; font-family:'IBM Plex Mono',monospace; font-size:11px; line-height:1.8; min-height:160px; }
+.terms-strip { border-top:1px solid #16162a; padding:14px 20px; background:#0c0c18; }
+.terms-label { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#2a2a40; letter-spacing:.2em; text-transform:uppercase; margin-bottom:8px; }
+.terms-text  { font-size:14px; line-height:1.7; color:#5a5a72; }
+.hl { background:#fef3c7; border-bottom:2px solid #f59e0b; padding:0 2px; border-radius:2px; font-weight:600; color:#92400e; }
+.section-label { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.2em; color:#333; text-transform:uppercase; margin-bottom:14px; display:flex; align-items:center; gap:14px; }
+.section-label::after { content:''; flex:1; height:1px; background:#16162a; }
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:48px; }
+.chip { font-family:'IBM Plex Mono',monospace; font-size:11px; color:#444; background:#0d0d1a; border:1px solid #1a1a2e; padding:7px 14px; cursor:pointer; border-radius:6px; font-style:italic; transition:all .15s; }
+.chip:hover { background:#16162a; border-color:#6366f1; color:#a5b4fc; transform:translateY(-1px); }
+.bk-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+.bk-card { background:#0d0d1a; border:1px solid #1a1a2e; border-radius:10px; padding:16px 16px 12px; position:relative; overflow:hidden; opacity:0; animation:fadeUp .35s ease forwards; }
+.bk-top  { position:absolute; top:0; left:0; right:0; height:2px; }
+.bk-word { font-family:'Syne',sans-serif; font-weight:800; font-size:19px; color:#e2e2f0; margin-bottom:3px; }
+.bk-arr  { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#2a2a3e; letter-spacing:.12em; margin-bottom:8px; }
+.bk-def  { font-size:13px; color:#7070a0; line-height:1.6; margin-bottom:8px; }
+.bk-ctx  { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#252535; font-style:italic; margin-bottom:10px; line-height:1.5; }
+.bk-meta { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.bk-badge { border-radius:10px; padding:2px 10px; font-size:9px; font-family:'IBM Plex Mono',monospace; font-weight:700; letter-spacing:.08em; }
+.bk-votes { font-family:'IBM Plex Mono',monospace; font-size:9px; display:flex; gap:6px; align-items:center; }
+footer { background:#06060c; border-top:1px solid #16162a; color:#2a2a3a; padding:20px 28px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:.12em; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+.footer-brand { font-family:'Syne',sans-serif; font-weight:800; font-size:17px; color:#e2e2f0; }
+.footer-brand em { color:#818cf8; font-style:italic; }
+footer a { color:#2a2a3a; text-decoration:none; }
+footer a:hover { color:#818cf8; }
+@media(max-width:640px){
+  .two-panel { grid-template-columns:1fr; }
+  .pane-left { border-right:none; border-bottom:1px solid #1a1a2e; }
+  .hero,.main { padding-left:16px; padding-right:16px; }
+  .topbar { padding:0 16px; font-size:9px; }
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-brand">LINGOAI</span>
+  <span><span class="live-dot"></span>MILLENNIAL &amp; GEN Z → PLAIN ENGLISH</span>
+  <span>URBAN DICTIONARY + GEMINI AI</span>
+</div>
+<div class="hero">
+  <div class="eyebrow">Internet Language Intelligence</div>
+  <h1>LINGO<em>AI</em></h1>
+  <p class="hero-desc">Paste any <strong>Millennial or Gen Z phrase</strong> on the left — get an instant plain English translation on the right that <em>anyone</em> can understand.</p>
+  <div class="gen-row">
+    <span class="gen-label">TRANSLATE AS:</span>
+    <button class="gen-btn active-both" onclick="setGen('Both',this)">🌐 Both</button>
+    <button class="gen-btn" onclick="setGen('Millennial',this)">💻 Millennial</button>
+    <button class="gen-btn" onclick="setGen('Gen Z',this)">📱 Gen Z</button>
+  </div>
+</div>
+<div class="main">
+  <div class="two-panel">
+    <div class="pane pane-left">
+      <div class="pane-bar"><div class="pane-dot" style="background:#ec4899"></div>Millennial / Gen Z Input</div>
+      <textarea id="phraseInput" placeholder='Type a phrase… e.g. "no cap that fit is bussin fr"' maxlength="400" rows="5"></textarea>
+      <div class="pane-foot">
+        <span class="char-hint" id="charCount">0 / 400</span>
+        <button class="translate-btn" id="translateBtn" onclick="go()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+          TRANSLATE
+        </button>
+      </div>
+    </div>
+    <div class="pane pane-right">
+      <div class="pane-bar"><div class="pane-dot" style="background:#22c55e"></div>Plain English Translation</div>
+      <div id="outputArea"><div class="out-idle">// TRANSLATION APPEARS HERE</div></div>
+    </div>
+  </div>
+  <div class="section-label">Try these phrases</div>
+  <div class="chips" id="chipsRow"></div>
+  <div id="breakdownSection"></div>
+</div>
+<footer>
+  <div class="footer-brand">Lingo<em>AI</em></div>
+  <span>DATA FROM URBAN DICTIONARY · POWERED BY GOOGLE GEMINI</span>
+  <a href="https://www.urbandictionary.com" target="_blank">URBANDICTIONARY.COM ↗</a>
+</footer>
+<script>
+const GEMINI_API_KEY = "AIzaSyDGxoYenuLTYE28_0CuakiRVshVSgr4K68";
+const GEMINI_API = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + GEMINI_API_KEY;
+const GEN_COLORS = { Millennial:'#8b5cf6', 'Gen Z':'#ec4899', Both:'#f59e0b' };
+let genFilter = 'Both';
+const EXAMPLES = [
+  "no cap that's bussin fr",
+  "she's lowkey salty rn",
+  "he said periodt bestie",
+  "that fit is giving main character energy",
+  "I'm dead that's so slay",
+  "it's giving very demure very mindful",
+  "understood the assignment no cap",
+  "rent free in my head rn"
+];
+const chipsRow = document.getElementById('chipsRow');
+EXAMPLES.forEach(ex => {
+  const d = document.createElement('div');
+  d.className = 'chip';
+  d.textContent = ex;
+  d.onclick = () => { inp.value = ex; updateCount(); };
+  chipsRow.appendChild(d);
+});
+const inp = document.getElementById('phraseInput');
+inp.addEventListener('input', updateCount);
+inp.addEventListener('keydown', e => { if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();go();} });
+function updateCount(){ document.getElementById('charCount').textContent = inp.value.length+' / 400'; }
+function setGen(g, btn){
+  genFilter = g;
+  document.querySelectorAll('.gen-btn').forEach(b => b.className='gen-btn');
+  btn.classList.add(g==='Both'?'active-both':g==='Millennial'?'active-millennial':'active-genz');
+}
+function setOutput(html)    { document.getElementById('outputArea').innerHTML = html; }
+function setBreakdown(html) { document.getElementById('breakdownSection').innerHTML = html; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fv(n) { if(!n&&n!==0)return'—'; return n>=1000?(n/1000).toFixed(1)+'k':String(n); }
+function highlightTerms(text, terms){
+  let r = esc(text);
+  [...terms].sort((a,b)=>b.length-a.length).forEach(t=>{
+    r = r.replace(new RegExp('('+t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<span class="hl">$1</span>');
+  });
+  return r;
+}
+async function callAI(prompt){
+  const r = await fetch(GEMINI_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      generationConfig: { maxOutputTokens: 1000, temperature: 0.3 }
+    })
+  });
+  const d = await r.json();
+  if(d.error) throw new Error(d.error.message || JSON.stringify(d.error));
+  return d.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+}
+async function fetchUD(term){
+  try{
+    const url='https://corsproxy.io/?'+encodeURIComponent('https://api.urbandictionary.com/v0/define?term='+encodeURIComponent(term));
+    const r=await fetch(url);
+    const d=await r.json();
+    return ((d.list||[]).sort((a,b)=>b.thumbs_up-a.thumbs_up))[0]||null;
+  }catch{return null;}
+}
+async function go(){
+  const phrase = inp.value.trim();
+  if(!phrase) return;
+  const btn = document.getElementById('translateBtn');
+  btn.disabled = true;
+  btn.textContent = 'TRANSLATING…';
+  setBreakdown('');
+  try {
+    setOutput(`<div class="out-loading"><div class="spinner"></div>SPOTTING MILLENNIAL &amp; GEN Z TERMS...</div>`);
+    let raw1 = await callAI(`You are an expert in Millennial and Gen Z internet slang, social media language, and pop culture lingo.\n\nPhrase: "${phrase}"\nGeneration focus: ${genFilter}\n\nList every slang word or multi-word expression that is Millennial or Gen Z lingo that an older adult or non-internet-native might not understand.\n\nReturn ONLY a JSON array of strings. Example: ["no cap","bussin","slay","it's giving"]\nIf none, return [].`);
+    let terms = [];
+    try { terms = JSON.parse(raw1.replace(/```json|```/g,'').trim()); } catch {}
+    if(!Array.isArray(terms)) terms = [];
+    setOutput(`<div class="out-loading"><div class="spinner"></div>LOOKING UP ${terms.length} TERM${terms.length!==1?'S':''} ON URBAN DICTIONARY...</div>`);
+    const udMap = {};
+    await Promise.all(terms.map(async t => {
+      const def = await fetchUD(t);
+      if(def) udMap[t] = def;
+    }));
+    setOutput(`<div class="out-loading"><div class="spinner"></div>GENERATING PLAIN ENGLISH TRANSLATION...</div>`);
+    const ctx = Object.entries(udMap).map(([t,d])=>`"${t}": ${d.definition.replace(/\[|\]/g,'').slice(0,180)}`).join('\n');
+    let raw2 = await callAI(`You are a Millennial/Gen Z slang-to-plain-English translator.\n\nOriginal: "${phrase}"\nGeneration focus: ${genFilter}\n\nUrban Dictionary context:\n${ctx||'(use your knowledge of Millennial/Gen Z internet culture)'}\n\nReturn ONLY valid JSON, no markdown:\n{\n  "translation": "Full plain English — same meaning and tone, zero slang, understandable by any fluent English speaker of any age",\n  "breakdown": [\n    { "slang": "term", "meaning": "plain English in 1 sentence", "generation": "Millennial or Gen Z or Both", "context": "brief note on origin or how it is used" }\n  ]\n}`);
+    let translation = '', breakdown = [];
+    try {
+      const p = JSON.parse(raw2.replace(/```json|```/g,'').trim());
+      translation = p.translation||'';
+      breakdown = Array.isArray(p.breakdown)?p.breakdown:[];
+    } catch { translation = raw2; }
+    setOutput(`
+      <div class="out-result">${esc(translation)}</div>
+      ${terms.length>0?`<div class="terms-strip"><div class="terms-label">Slang detected in original</div><div class="terms-text">${highlightTerms(phrase,terms)}</div></div>`:''}
+    `);
+    if(breakdown.length>0){
+      const cards = breakdown.map((item,i)=>{
+        const def = udMap[item.slang]||udMap[(item.slang||'').toLowerCase()]||null;
+        const gc = GEN_COLORS[item.generation]||'#6366f1';
+        const emoji = item.generation==='Gen Z'?'📱':item.generation==='Millennial'?'💻':'🌐';
+        return `<div class="bk-card" style="animation-delay:${i*0.06}s">
+          <div class="bk-top" style="background:linear-gradient(90deg,${gc},transparent)"></div>
+          <div class="bk-word">${esc(item.slang)}</div>
+          <div class="bk-arr">↳ PLAIN ENGLISH</div>
+          <div class="bk-def">${esc(item.meaning)}</div>
+          ${item.context?`<div class="bk-ctx">${esc(item.context)}</div>`:''}
+          <div class="bk-meta">
+            ${item.generation?`<span class="bk-badge" style="background:${gc}20;color:${gc};border:1px solid ${gc}40">${emoji} ${esc(item.generation.toUpperCase())}</span>`:''}
+            ${def?`<div class="bk-votes"><span style="color:#16a34a">▲ ${fv(def.thumbs_up)}</span><span style="color:#ef4444">▼ ${fv(def.thumbs_down)}</span><span style="color:#252535">UD</span></div>`:`<span style="color:#252535;font-family:'IBM Plex Mono',monospace;font-size:9px">AI</span>`}
+          </div>
+        </div>`;
+      }).join('');
+      setBreakdown(`<div class="section-label" style="margin-bottom:16px">Word &amp; Phrase Breakdown</div><div class="bk-grid">${cards}</div>`);
+    }
+  } catch(e){
+    setOutput(`<div class="out-error">⚠ ${esc(e.message)}<br><span style="color:#333">Please try again.</span></div>`);
+  }
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg> TRANSLATE`;
+}
+</script>
+</body>
+</html>
